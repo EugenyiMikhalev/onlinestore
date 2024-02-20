@@ -7,12 +7,16 @@ import { Context } from '../index';
 const DeviceList = observer( () => {
 
     const {device} = useContext(Context)
-
+        
     return ( 
         <Row className='d-flex'>
-            {device.devices.map(device => 
-               <DeviceItem key={device.id} device={device}/>   
-            )}
+            {device.devices.length !== 0 ? 
+            device.devices.map(item => 
+               <DeviceItem key={item.id} device={item} brands={device.brands}/>   
+            )
+            :
+            'По вашему запросу не найдено устройств...'
+            }
         </Row>
      );
 })
