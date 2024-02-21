@@ -9,16 +9,11 @@ class DeviceController {
         try {
             const {name, price, brandId, typeId, info} = req.body
 
-            // console.log(req.files)
-            // return res.json(req.files)
             
             const {file} = req.files
 
-            // console.log(img)
 
             let fileName = uuid.v4() + ".jpg"
-            // console.log(fileName)
-            // return res.json(fileName)
 
             file.mv(path.resolve(__dirname, '..', 'static', fileName))
             const device = await Device.create({name, price, brandId, typeId, img: fileName})

@@ -31,20 +31,28 @@ const NavBar = observer( () => {
 
     return ( 
     <Navbar bg="dark" variant="dark">
-        <Container>
-        <NavLink style={{color:'white'}} to={SHOP_ROUTE}>OnlineStore</NavLink>
+        <Container className='d-flex justify-content-between align-items-center'>
+        <NavLink 
+          style={{color:'white', textDecoration: 'none'}} 
+          to={SHOP_ROUTE} 
+          className={'d-flex align-items-center'}
+        >
+          <h1 style={{fontSize: 24}} className='m-0'>OnlineStore</h1>
+        </NavLink>
         {user.isAuth ? 
             <Nav
-            className="ms-auto"
+            className=""
             style={{color:'white'}}
             >
-                {isAdmin && <Button onClick={() => navigate(ADMIN_ROUTE)} variant="outline-light">Админ панель</Button>}
+                {isAdmin && <Button onClick={() => navigate(ADMIN_ROUTE)} variant="outline-light">
+                  Админ панель
+                </Button>}
                 <Button onClick={() => logOut()} variant="outline-light" className='ms-2'>Выйти</Button>
 
             </Nav>
             :
             <Nav
-            className="ms-auto"
+            className=""
             style={{color:'white'}}
             >
                 <Button variant="outline-light" onClick={() => navigate(LOGIN_ROUTE)}>Авторизация</Button>

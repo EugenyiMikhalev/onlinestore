@@ -15,8 +15,7 @@ const AppRouter = observer(() => {
             )}
             {publickRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} element={<Component/>}/>
-            )} 
-            {/* <Redirect to={SHOP_ROUTE} /> */}
+            )}
             <Route path="*" element={<Navigate to={SHOP_ROUTE} replace />}/>
         </Routes>
      ); 

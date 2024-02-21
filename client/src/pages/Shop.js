@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import TypeBar from '../components/TypeBar';
 import BrandBar from '../components/BrandBar';
@@ -11,6 +11,8 @@ import Pages from '../components/Pages';
 const Shop = observer(() => {
 
     const {device} = useContext(Context)
+    const [loading, setLoading] = useState(true)
+
 
     useEffect(() => {
         fetchTypes().then(data => device.setTypes(data))
@@ -22,7 +24,7 @@ const Shop = observer(() => {
         fetchDevices(device.selectedType.id, device.selectedBrand.id, device.page, 3).then(data => {
             device.setDevices(data.rows)
             device.setTotalCount(data.count)
-        })
+        }).finally(() => setLoading(false))
     }, [device.page, device.selectedType, device.selectedBrand])
 
     return (
@@ -33,7 +35,7 @@ const Shop = observer(() => {
                 </Col>
                 <Col md={9}>
                     <BrandBar/>
-                    <DeviceList/>
+                    <DeviceList loading={loading}/>
                     <Pages/>
                 </Col>
             </Row>
