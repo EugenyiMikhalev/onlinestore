@@ -2,6 +2,7 @@ const uuid = require('uuid')
 const path = require('path')
 const {Device, DeviceInfo} = require('../models/models')
 const ApiError = require('../error/ApiError')
+const { Sequelize } = require('../db')
 
 
 class DeviceController {
@@ -37,13 +38,17 @@ class DeviceController {
     }
 
     async getAll(req, res) {
-        let {brandId, typeId, limit, page} = req.query
+        let {brandId, typeId, limit, page, search} = req.query
         page = page || 1
         limit = limit || 9
         let offset = page * limit - limit
         let devices;
         if(!brandId && !typeId) {
-            devices = await Device.findAndCountAll({limit, offset})
+            devices = await Device.findAndCountAll({where: {
+                name: {
+                  [Sequelize.Op.iLike]: `%${search}%`,
+                },
+              },limit, offset})
         } if(brandId && !typeId) {
             devices = await Device.findAndCountAll({where:{brandId}, limit, offset})
         } if(!brandId && typeId) {
