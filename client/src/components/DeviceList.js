@@ -19,7 +19,7 @@ const DeviceList = observer( ({loading}) => {
                <DeviceItem key={item.id} device={item} brands={device.brands}/>   
             )
             :
-            'По вашему запросу не найдено устройств...'
+            <p style={{fontSize: 20, marginTop: 50}}>По вашему запросу не найдено устройств...</p>
             }
         </Row>
      );

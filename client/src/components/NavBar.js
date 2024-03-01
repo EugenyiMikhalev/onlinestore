@@ -3,7 +3,7 @@ import { Context } from '../index';
 import Navbar from "react-bootstrap/Navbar"
 import Nav from "react-bootstrap/Nav"
 import { NavLink } from 'react-router-dom';
-import { ADMIN_ROUTE, FAVORITES_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/consts';
+import { ADMIN_ROUTE, FAVORITES_ROUTE, HOME_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/consts';
 import {Button, Container} from "react-bootstrap"
 import {observer} from "mobx-react-lite"
 import { useNavigate } from 'react-router-dom';
@@ -37,20 +37,20 @@ const NavBar = observer( () => {
       }, [user.isAuth])
 
     return ( 
-    <Navbar bg="white" variant="white" style={{height: 100}}>
+    <Navbar bg="white" variant="white" style={{height: '10vh', padding: 0}}>
         <Container className='d-flex justify-content-between align-items-center'>
           <NavLink 
             style={{color:'black', textDecoration: 'none'}} 
-            to={SHOP_ROUTE} 
+            to={HOME_ROUTE} 
             className={'d-flex align-items-center'}
           >
             <img src={navLogo} alt='Furniro'/>
             <h1 style={{fontSize: 24}} className='m-0'>Furniro</h1>
           </NavLink>
-          <Nav className='d-flex justify-content-around w-100 ms-2 gap-1' style={{maxWidth: 610}}>
+          <Nav className='d-flex justify-content-around w-50 ms-2 gap-1' style={{maxWidth: 610}}>
             <NavLink 
               style={{color:'black', textDecoration: 'none'}} 
-              to={SHOP_ROUTE} 
+              to={HOME_ROUTE} 
               className={'d-flex align-items-center'}
             >
               <h1 style={{fontSize: 16, fontWeight: 500}} className='m-0'>Home</h1>

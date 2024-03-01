@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from './index';
 import { check } from './http/userAPI';
 import { Spinner } from 'react-bootstrap';
+import './assets/styles/global.css'
 
 const  App = observer(() => {
   

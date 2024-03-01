@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
-import { ListGroup } from 'react-bootstrap';
+import { Container, ListGroup } from 'react-bootstrap';
 import {observer} from 'mobx-react-lite';
 import { Context } from '../index';
+import Search from './Search';
 
 const TypeBar = observer(() => {
     const {device} = useContext(Context)
-    return ( 
+    return ( <Container className=''>
+        <Search />
         <ListGroup>
             {device.types.map(type =>
                 <ListGroup.Item 
@@ -17,7 +19,7 @@ const TypeBar = observer(() => {
                     {type.name}
                 </ListGroup.Item>
             )}
-        </ListGroup>
+        </ListGroup></Container>
      );
 })
  
