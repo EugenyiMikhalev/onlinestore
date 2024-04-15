@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { FormControl, Row } from 'react-bootstrap'
+import { Form, FormControl, Row } from 'react-bootstrap'
 import { Context } from '..'
 import { observer } from 'mobx-react-lite'
 
@@ -11,11 +11,12 @@ const Search = observer (() => {
   return (
     <Row className='w-100 mx-auto mb-2'>
         <img />
+        <Form className='form-subscribe mb-3'>
         <FormControl 
             placeholder='Search...'
             value={device.search}
             onChange={e => device.setSearch(e.target.value)}
-            />
+            /> </Form>
     </Row>
   ) 
 })

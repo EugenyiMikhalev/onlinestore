@@ -1,64 +1,229 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 import star from '../assets/star.svg'
-import { useParams } from 'react-router-dom';
-import { fetchOneDevice } from '../http/deviceAPI';
+import starGold from '../assets/starGold.png'
+import { NavLink, useParams } from 'react-router-dom';
+import { createRating, fetchOneDevice, fetchRatings } from '../http/deviceAPI';
+import { HOME_ROUTE, SHOP_ROUTE } from '../utils/consts';
+import { Context } from '..';
+import { addItem, check } from '../http/userAPI';
 
 const DevicePage = () => {
 
-    // const device = {id: 1, name: "Iphone 12 pro", price: 25000, rating: 5, img:`https://apple-rostov.com/image/cache/catalog/apple-iphone-12-pro/apple-iphone-12-pro-256-gb-graphite-800x800-product_popup.jpg`}
-    // const description = [
-    //     {id: 1, title: 'Оперативная память', description: '5 гб'},
-    //     {id: 2, title: 'Камера', description: '12 мп'},
-    //     {id: 3, title: 'Процессор', description: 'Пентиум 3'},
-    //     {id: 4, title: 'Кол-во ядер', description: '2'},
-    //     {id: 5, title: 'Аккумулятор', description: '4000'}
-    // ]
+    const {user} = useContext(Context)
 
+    const [userId, setUserId] = useState()
     const [device, setDevice] = useState({info:[]})
     const {id} = useParams()
 
     useEffect(() => {
-        fetchOneDevice(id).then(data => setDevice(data))
+        fetchOneDevice(id).then(data => {
+            fetchRatings(id).then(data1 => {
+                let rating = 0;
+                let count = 0;
+                data1.rows.map(rate => {
+                    rating = rating + rate.rate;
+                    count += 1})
+                rating /= count
+                setDevice({...data, rating: Math.round(rating * 10) / 10})}
+                , error => console.log(error))
+        })
+        check().then(
+            data => {setUserId(data.id)}
+             , 
+            error => console.log(error)
+        )
     }, [])
 
+    const handleHoverStar = (e) => {
+        let current = e.target.parentNode.children[0]
+        e.target.src = starGold
+        let i = 0
+        while (current !== e.target) {
+            // console.log(i)
+            current.src = starGold
+            i = i + 1
+            current = e.target.parentNode.children[i]
+        }
+        while(i < 4) {
+            // console.log(i)
+
+            i = i + 1
+            current = e.target.parentNode.children[i]
+            current.src = star
+        }
+    }
+
+    const handleHoverOutStar = (e) => {
+        // e.target.src = star
+        // let current = e.target.parentNode.children[0]
+        // let i = 0
+        // while (current !== e.target) {
+        //     current.src = star
+        //     i = i + 1
+        //     current = e.target.parentNode.children[i]
+        // }
+        let current = e.target.parentNode.children[0]
+        let i = 0
+        while (i <= device.rating - 1) {
+
+            current.src = starGold
+            i = i + 1
+            current = e.target.parentNode.children[i]
+        }
+        while(i < 5) {
+
+            current = e.target.parentNode.children[i]
+            current.src = star
+            i = i + 1
+        }
+    }
+
+    // const handleHoverOutStarContainer = (e) => {
+    //     console.log(e.target)
+    //     let current = e.target.parentNode.children[0]
+    //     let i = 0
+    //     while (i <= device.rating - 1) {
+    //         if(current) current.src = starGold
+    //         else console.log('src undefined', e.target)
+    //         i = i + 1
+    //         current = e.target.parentNode.children[i]
+    //     }
+    // }
+
+    const handleRate = (e) => {
+        e.target.src = star
+        let current = e.target.parentNode.children[0]
+        let i = 0
+        while (current !== e.target) {
+            current.src = star
+            i = i + 1
+            current = e.target.parentNode.children[i]
+        }
+        let rating = i + 1
+        // let device_id = window.location.pathname.toString().split('/').pop()
+        const formData = new FormData()
+        formData.append('rate', rating)
+        formData.append('product_id', id)
+        formData.append('user_id', userId)
+        createRating(formData).then(data => {
+            console.log(data)
+        })
+        // createRating({
+        //     device_id: window.location.pathname.toString().slice(-2),
+        //     user_id: userId,
+        //     rate: rating
+        // }).then(data => {
+        //     console.log(data)
+        // })
+    }
+
+    const handleAddToCart = (e) => {
+        const formData = new FormData()
+        console.log(id, userId)
+        formData.append('deviceId', id)
+        formData.append('userId', userId)
+        formData.append('price', device.price)
+        formData.append('quantity', 1)
+        console.log(formData)
+        addItem(formData).then(data => {
+            console.log(data)
+        })
+    }
     return ( 
-        <Container className='mt-3'>
-            <Row>
-                <Col md={4}>
-                    <Image width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} />
-                </Col>
-                <Col md={4}>
-                    <Row className='d-flex flex-column align-items-center'>
-                        <h2 className='text-center'>{device.name}</h2>
-                        <div
-                            className='d-flex align-items-center justify-content-center'
-                            style={{background: `url(${star}) no-repeat center center`, width: 240, height: 240, backgroundSize: 'cover', fontSize:64}}
-                        >
-                            {device.rating}
-                        </div>
-                    </Row>
-                </Col>
-                <Col md={4}>
-                    <Card
-                        className='d-flex flex-column align-items-center justify-content-around'
-                        style={{width: 300, height: 300, fontSize: 32, border: '5px solid lightgray'}}
-                    >
-                        <h3>От {device.price} руб.</h3>
-                        <Button variant={"outline-dark"}>Добавить в корзину</Button>
-                    </Card>
-                </Col>
-            </Row>
-            <Row 
-                className='d-flex flex-column m-3'
+        <Container >
+            <div 
+                style={{color: '#000', fontSize: 25, backgroundColor: '#F9F1E7'}} 
+                className='mt-3 px-5 py-5 d-flex gap-4 align-items-center'
             >
-                <h1>Характеристики</h1>
-                {device.info.map( (info, index) => 
-                    <Row key={info.id} style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding: 10}}>
-                        {info.title}: {info.description}
-                    </Row>
-                )}
+                <NavLink 
+                    style={{textDecoration: 'none'}} 
+                    to={HOME_ROUTE} 
+                    className={'d-flex align-items-center m-0'}
+                    >
+                    <h1 style={{fontSize: 16, color: '#9F9F9F', margin: 0}} className=''>Home</h1>
+                </NavLink>
+                {'>'} 
+                <NavLink 
+                    style={{textDecoration: 'none', display: 'inline-block'}} 
+                    to={SHOP_ROUTE} 
+                    className={'d-flex align-items-center'}
+                    >
+                    <h1 style={{fontSize: 16, color: '#9F9F9F', margin: 0}} className=''>Shop</h1>
+                </NavLink>
+                {'>'} <span style={{color: '#000', fontSize: 16, fontWeight: 600, borderLeft: '1px solid black', paddingLeft: 25}}>{device.name}</span>
+            </div>
+
+            <Row className='mt-3'>
+                <Col md={5} className='px-2 d-flex justify-content-between'>
+                    <img width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} style={{margin: 'auto'}}/>
+                </Col>
+                <Col md={7} className='px-0' style={{padding: 0}}>
+                    <h1 style={{color: '#000', fontSize: 42, fontWeight: 400}}>{device.name}</h1>
+                    <h3 className='my-3' style={{color: '#9F9F9F', fontSize: 24, fontWeight: 600}}>{device.price}</h3>
+                    <div className='d-flex' style={{color: '#9F9F9F', fontSize: 13, fontWeight: 400}}>
+                        {/* <div onMouseLeave={handleHoverOutStarContainer}> */}
+                        <img 
+                            onMouseOver={handleHoverStar}
+                            onMouseLeave={handleHoverOutStar}
+                            onClick={handleRate}
+                            style={{width: 20, height: 20}} 
+                            src={device.rating < 1 || isNaN(device.rating) ? star : starGold}/>
+                        <img 
+                            onMouseOver={handleHoverStar}
+                            onMouseLeave={handleHoverOutStar}
+                            onClick={handleRate}
+                            style={{width: 20, height: 20}} 
+                            src={device.rating < 2 || isNaN(device.rating) ? star : starGold}
+                            />
+                        <img 
+                            onMouseOver={handleHoverStar}
+                            onMouseLeave={handleHoverOutStar}
+                            onClick={handleRate}
+                            style={{width: 20, height: 20}} 
+                            src={device.rating < 3 || isNaN(device.rating) ? star : starGold}
+                            />
+                        <img 
+                            onMouseOver={handleHoverStar}
+                            onMouseLeave={handleHoverOutStar}
+                            onClick={handleRate}
+                            style={{width: 20, height: 20}} 
+                            src={device.rating < 4 || isNaN(device.rating) ? star : starGold}
+                            />
+                        <img 
+                            onMouseOver={handleHoverStar}
+                            onMouseLeave={handleHoverOutStar}
+                            onClick={handleRate}
+                            style={{width: 20, height: 20}} 
+                            src={device.rating < 5 || isNaN(device.rating) ? star : starGold}
+                            />
+                        {/* </div> */}
+                        <span 
+                            className='ms-2 ps-2'
+                            style={
+                                isNaN(device.rating) ? {borderLeft: '1px solid black', display: 'inline-block'}
+                                : {borderLeft: '1px solid black', display: 'inline-block', color: 'black'}
+                            }
+                        >
+                            {isNaN(device.rating) ? ' No rating for this item' : device.rating}
+                        </span>
+                    </div>
+                    <div className='my-3' style={{color: '#000', fontSize: 13, fontWeight: 400}}>
+                        {device.info.map( (info, index) => 
+                            <div key={info.id} style={{}}>
+                                {info.title}: {info.description}
+                            </div>
+                    )}</div>
+                    <Button  variant='light' className='devicePage__button-add'
+                        onClick={handleAddToCart}
+                    >
+                        Add to cart
+                    </Button>
+                </Col>
             </Row>
+
+
+            
         </Container>
      );
 }

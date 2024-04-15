@@ -1,10 +1,13 @@
-import { ADMIN_ROUTE, BASKET_ROUTE, DEVICE_ROUTE, FAVORITES_ROUTE, HOME_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "./utils/consts"
+import { ABOUT_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, CART_ROUTE, CONTACT_ROUTE, DEVICE_ROUTE, FAVORITES_ROUTE, HOME_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "./utils/consts"
 import Admin from "./pages/Admin"
 import Basket from "./pages/Basket"
 import Shop from "./pages/Shop"
 import Auth from "./pages/Auth"
 import DevicePage from "./pages/DevicePage"
 import Home from "./pages/Home"
+import About from "./pages/About"
+import Contact from "./pages/Contact"
+import Cart from "./pages/Cart"
 
 export const authRoutes = [
     {
@@ -12,8 +15,8 @@ export const authRoutes = [
         Component: Admin
     },
     {
-        path: BASKET_ROUTE,
-        Component: Basket
+        path: CART_ROUTE,
+        Component: Cart
     },
     {
         path: FAVORITES_ROUTE,
@@ -41,5 +44,13 @@ export const publickRoutes = [
     {
         path: DEVICE_ROUTE + '/:id',
         Component: DevicePage
+    },
+    {
+        path: ABOUT_ROUTE,
+        Component: About
+    },
+    {
+        path: CONTACT_ROUTE,
+        Component: Contact
     }
 ]

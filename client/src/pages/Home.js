@@ -49,19 +49,19 @@ export default function Home() {
             <Container
                 className='d-flex justify-content-around'
             >
-                <Card style={{ width: 381, maxHeight: 480 }}>
+                <Card style={{ width: 381}} border='light'>
                 <Card.Img variant="top" src={homeDining} />
                 <Card.Body className='d-flex justify-content-center'>
                     <Card.Title style={{fontSize: 24, fontWeight: 600}}>Dining</Card.Title>
                 </Card.Body>
                 </Card>
-                <Card style={{ width: 381, maxHeight: 480 }}>
+                <Card style={{ width: 381}} border='light'>
                 <Card.Img variant="top" src={homeLiving} />
                 <Card.Body className='d-flex justify-content-center'>
                     <Card.Title style={{fontSize: 24, fontWeight: 600}}>Living</Card.Title>
                 </Card.Body>
                 </Card>
-                <Card style={{ width: 381, maxHeight: 480 }}>
+                <Card style={{ width: 381  }} border='light'> 
                 <Card.Img variant="top" src={homeBedroom} />
                 <Card.Body className='d-flex justify-content-center'>
                     <Card.Title style={{fontSize: 24, fontWeight: 600}}>Bedroom</Card.Title>

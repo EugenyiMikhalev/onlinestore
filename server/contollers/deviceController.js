@@ -38,6 +38,8 @@ class DeviceController {
     }
 
     async getAll(req, res) {
+        console.log('query:', JSON.stringify(req.query))
+
         let {brandId, typeId, limit, page, search} = req.query
         page = page || 1
         limit = limit || 9
@@ -70,6 +72,15 @@ class DeviceController {
         return res.json(device)
     }
 
+    async delete(req, res) {
+        const {name} = req.body
+        await Device.destroy({
+            where: {
+              name: name
+            },
+          });
+        return res.json('device deleted')
+    }
 }
 
 module.exports = new DeviceController()

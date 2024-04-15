@@ -5,15 +5,23 @@ const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true,  autoIncrement:true},
     email: {type: DataTypes.STRING, unique: true},
     password: {type: DataTypes.STRING},
-    role: {type: DataTypes.STRING, defaultValue: "USER"}
+    role: {type: DataTypes.STRING, defaultValue: "USER"},
+    phone: {type: DataTypes.STRING},
+    last_login: {type: DataTypes.DATE, allowNull: false}
 })
 
-const Basket = sequelize.define('basket', {
+const Basket = sequelize.define('baskets', {
     id: {type: DataTypes.INTEGER, primaryKey: true,  autoIncrement:true},
+    userId: { type: DataTypes.INTEGER, allowNull: false },
+    status: {type: DataTypes.STRING}
 })
 
-const BasketDevice = sequelize.define('basket_device', {
+const BasketDevice = sequelize.define('basket_devices', {
     id: {type: DataTypes.INTEGER, primaryKey: true,  autoIncrement:true},
+    basketId: {type: DataTypes.INTEGER, allowNull: false},
+    deviceId: {type: DataTypes.INTEGER, allowNull: false},
+    price: {type: DataTypes.INTEGER, allowNull: false},
+    quantity: {type: DataTypes.INTEGER, allowNull: false}
 })
 
 const Device = sequelize.define('device', {
@@ -37,6 +45,8 @@ const Brand = sequelize.define('brand', {
 const Rating = sequelize.define('rating', {
     id: {type: DataTypes.INTEGER, primaryKey: true,  autoIncrement:true},
     rate: {type: DataTypes.INTEGER, allowNull: false},
+    product_id: {type: DataTypes.INTEGER, allowNull: false},
+    user_id: {type: DataTypes.INTEGER, allowNull: false},
 })
 
 const DeviceInfo = sequelize.define('device_info', {
@@ -53,9 +63,11 @@ const TypeBrand = sequelize.define('type_brand', {
 User.hasOne(Basket)
 Basket.belongsTo(User)
 
-User.hasMany(Rating)
-Rating.belongsTo(User)
+User.hasMany(Rating, { foreignKey: 'user_id' });
+Rating.belongsTo(User, { foreignKey: 'user_id' });
 
+Device.hasMany(Rating, { foreignKey: 'product_id' });
+Rating.belongsTo(Device, { foreignKey: 'product_id' });
 Basket.hasMany(BasketDevice)
 BasketDevice.belongsTo(Basket)
 
@@ -64,9 +76,6 @@ Device.belongsTo(Type)
 
 Brand.hasMany(Device)
 Device.belongsTo(Brand) 
-
-Device.hasMany(Rating)
-Rating.belongsTo(Device)
 
 Device.hasMany(BasketDevice)
 BasketDevice.belongsTo(Device)

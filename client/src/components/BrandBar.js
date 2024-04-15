@@ -33,7 +33,7 @@ const BrandBar = observer(() => {
                     device.setSelectedType({})
                 }}
             >
-                Сбросить фильтры
+                Remove filters
 
             </Button>}
         </Row>

@@ -6,4 +6,6 @@ export const SHOP_ROUTE = '/shop'
 export const BASKET_ROUTE = '/basket'
 export const DEVICE_ROUTE = '/device'
 export const FAVORITES_ROUTE = '/favorites'
-
+export const ABOUT_ROUTE = '/about'
+export const CONTACT_ROUTE = '/contact'
+export const CART_ROUTE = '/cart'

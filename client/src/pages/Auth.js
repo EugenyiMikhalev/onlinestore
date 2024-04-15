@@ -43,21 +43,21 @@ const Auth = observer(() => {
             style={{height: window.innerHeight - 54}}
         >
             <Card style={{width: 600}} className='p-5'>
-                <h2 className='mx-auto'>
-                    {isLogin ? 'Авторизация' : 'Регистрация'} 
+                <h2 className='mx-auto' style={{color: "var(--primary-color)"}}>
+                    {isLogin ? 'Authorization' : 'Registration'} 
                 </h2>
-                <Form className='d-flex flex-column'>
+                <Form className='d-flex flex-column form-subscribe'>
                     <Form.Control
                         className='mt-3'
-                        placeholder='Введите ваш email...'
+                        placeholder='Enter your email...'
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                     />
                 </Form>
-                <Form className='d-flex flex-column'>
+                <Form className='d-flex flex-column form-subscribe'>
                     <Form.Control
                         className='mt-3'
-                        placeholder='Введите ваш пароль...'
+                        placeholder='Enter your password...'
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                         type='password'
@@ -67,11 +67,11 @@ const Auth = observer(() => {
                     <Col>
                     {isLogin ?
                         <div>
-                            Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Зарегистрируйтесь</NavLink>
+                            Don't have an account? <NavLink to={REGISTRATION_ROUTE}>Create one!</NavLink>
                         </div>
                     :
                         <div>
-                            Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войдите</NavLink>
+                            Already have an account? <NavLink to={LOGIN_ROUTE}>Log in!</NavLink>
                         </div>
                     }
                     </Col>
@@ -82,10 +82,10 @@ const Auth = observer(() => {
                       
                     <Button 
                         className='align-self-end'
-                        variant={"outline-success"}
+                        variant={"outline-dark"}
                         onClick={click}
                     >
-                        {isLogin ? 'Войти' : 'Зарегистрироваться'}
+                        {isLogin ? 'Log in' : 'Registration'}
                     </Button>
                     </Col>
                   

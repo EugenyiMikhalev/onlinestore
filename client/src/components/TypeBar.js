@@ -8,7 +8,7 @@ const TypeBar = observer(() => {
     const {device} = useContext(Context)
     return ( <Container className=''>
         <Search />
-        <ListGroup>
+        <ListGroup className='typebar-list'>
             {device.types.map(type =>
                 <ListGroup.Item 
                     style={{cursor: 'pointer'}}
