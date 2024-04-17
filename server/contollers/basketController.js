@@ -2,13 +2,26 @@ const {Basket, BasketDevice} = require('../models/models')
 
 class BasketController {
     async add(req, res) {
-        console.log("req.bodyyyyyyyyyyyyyyyyyyyyyyyy",req.body)
+        // console.log("req.bodyyyyyyyyyyyyyyyyyyyyyyyy",req.body)
         const {userId, deviceId, price, quantity} = req.body
         let basket;
+
+        
         try {
-        basket = await Basket.create({userId, status: 'created'}) }
-        catch (e) {e => console.log('33333333', e)}
-        console.log('444444444')
+            basket = await Basket.findOne({where: {
+                userId: userId, status: 'created'
+            }})
+            console.log('BASKET: ', basket)
+        } catch (e) {
+            e => console.log(e)
+        }
+        if(!basket) {
+            try {
+                console.log('creating new basket!')
+                basket = await Basket.create({userId, status: 'created'}) }
+            catch (e) {e => console.log('33333333', e)}
+        }
+        // console.log('444444444')
         let BasketItems
         try {
             BasketItems = await BasketDevice.create({basketId: basket.id, deviceId, price, quantity})

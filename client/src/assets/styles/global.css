@@ -89,7 +89,7 @@
 
   /* SHOP */
   .shop-background {
-    background-image: url('C:\Users\user\Desktop\onlineStoreGit\client\src\assets\shop\background.png');
+    /* background-image: url('C:\Users\user\Desktop\onlineStoreGit\client\src\assets\shop\background.png'); */
     background-size: cover;
     background-position: center;
   }
@@ -100,7 +100,7 @@
 
   /* ABOUT */
   .about-background {
-    background-image: url('C:\Users\user\Desktop\onlineStoreGit\client\src\assets\about\background.png');
+    /* background-image: url('C:\Users\user\Desktop\onlineStoreGit\client\src\assets\about\background.png'); */
     background-size: cover;
     background-position: center;
   }
@@ -108,7 +108,7 @@
   /* CONTACT */
 
   .contact-background {
-    background-image: url('C:\Users\user\Desktop\onlineStoreGit\client\src\assets\contact\background.png');
+    /* background-image: url('C:\Users\user\Desktop\onlineStoreGit\client\src\assets\contact\background.png'); */
     background-size: cover;
     background-position: center;
   }
