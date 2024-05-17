@@ -2,6 +2,7 @@ const {Rating} = require('../models/models')
 
 class RatingController {
     async create(req, res) {
+        console.log(req.body)
         const {product_id, rate, user_id} = req.body
         const newRate = await Rating.create({rate, product_id, user_id})
         return res.json(newRate)

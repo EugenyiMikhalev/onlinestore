@@ -13,7 +13,7 @@ const DeviceList = observer( ({loading}) => {
       }
         
     return ( 
-        <Row className='d-flex'>
+        <Row className='deviceList-container d-flex mx-auto '>
             {device.devices.length !== 0 ? 
             device.devices.map(item => 
                <DeviceItem key={item.id} device={item} brands={device.brands}/>   

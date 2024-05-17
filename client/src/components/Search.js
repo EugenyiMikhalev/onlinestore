@@ -9,9 +9,9 @@ const Search = observer (() => {
     const {device} = useContext(Context)
     
   return (
-    <Row className='w-100 mx-auto mb-2'>
+    <Row className=''>
         <img />
-        <Form className='form-subscribe mb-3'>
+        <Form className='shop-search'>
         <FormControl 
             placeholder='Search...'
             value={device.search}

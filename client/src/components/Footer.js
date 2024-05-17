@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Container, Form } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import { HOME_ROUTE, SHOP_ROUTE } from '../utils/consts';
+import { ABOUT_ROUTE, CONTACT_ROUTE, HOME_ROUTE, SHOP_ROUTE } from '../utils/consts';
 
 const Footer = () => {
 
@@ -53,7 +53,7 @@ const Footer = () => {
                             </li>
                             <li className='my-4'>
                                 <NavLink
-                                    to={SHOP_ROUTE}
+                                    to={ABOUT_ROUTE}
                                     style={{color:'black', textDecoration: 'none', fontWeight: 'bold'}} 
                                 >
                                     About
@@ -61,7 +61,7 @@ const Footer = () => {
                             </li>
                             <li className='my-4'>
                                 <NavLink
-                                    to={SHOP_ROUTE}
+                                    to={CONTACT_ROUTE}
                                     style={{color:'black', textDecoration: 'none', fontWeight: 'bold'}} 
                                 >
                                     Contact

@@ -44,7 +44,7 @@ const NavBar = observer( () => {
             to={HOME_ROUTE} 
             className={'d-flex align-items-center'}
           >
-            <img src={navLogo} alt='Furniro'/>
+            <img src={navLogo} alt='Furniro' className='me-1'/>
             <h1 style={{fontSize: 24, fontWeight: 600}} className='m-0'>Furniro</h1>
           </NavLink>
           <Nav className='d-flex justify-content-around w-50 ms-2 gap-1' style={{maxWidth: 610}}>

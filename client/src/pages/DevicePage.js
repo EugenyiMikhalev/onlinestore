@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Image, Row, Carousel } from 'react-bootstrap';
 import star from '../assets/star.svg'
 import starGold from '../assets/starGold.png'
 import { NavLink, useParams } from 'react-router-dom';
@@ -25,7 +25,10 @@ const DevicePage = () => {
                     rating = rating + rate.rate;
                     count += 1})
                 rating /= count
-                setDevice({...data, rating: Math.round(rating * 10) / 10})}
+                setDevice({...data, rating: Math.round(rating * 10) / 10})
+                console.log(data.imgs)
+                console.log(device.imgs)
+            }
                 , error => console.log(error))
         })
         check().then(
@@ -126,9 +129,9 @@ const DevicePage = () => {
         formData.append('price', device.price)
         formData.append('quantity', 1)
         console.log(formData)
-        addItem(formData).then(data => {
-            console.log(data)
-        })
+        addItem(formData).then(data => 
+            console.log(data), error => console.log(error)
+        )
     }
     return ( 
         <Container >
@@ -155,12 +158,45 @@ const DevicePage = () => {
             </div>
 
             <Row className='mt-3'>
-                <Col md={5} className='px-2 d-flex justify-content-between'>
-                    <img width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} style={{margin: 'auto'}}/>
+                <Col md={5} 
+                // className='px-2 d-flex justify-content-between'
+                className='px-2 '
+                >
+                    {/* <img width={300} height={300} src={process.env.REACT_APP_API_URL + device.img} style={{margin: 'auto'}}/> */}
+                    <Carousel style={{maxWidth:423, maxHeight:500, margin: 'auto'}} variant='dark'>
+                        <Carousel.Item>
+                            <img 
+                                className='d-block w-100'
+                                src={process.env.REACT_APP_API_URL + device.img} style={{width:423, height:500}}
+                            />
+                        </Carousel.Item>
+
+                        {device.imgs && device.imgs.map(img => <Carousel.Item key={img.filename}>
+                        <img 
+                        className='d-block w-100'
+                        src={process.env.REACT_APP_API_URL + img.filename} style={{width:423, height:500}}/>
+
+                            
+                        </Carousel.Item>)}
+                        {/* <Carousel.Item>
+                        <img 
+                        className='d-block w-100'
+                        src={process.env.REACT_APP_API_URL + device.img} style={{maxWidth:423, maxHeight:500}}/>
+
+                            
+                        </Carousel.Item>
+                        <Carousel.Item>
+                        <img 
+                        className='d-block w-100'
+                        src={process.env.REACT_APP_API_URL + device.img} style={{maxWidth:423, maxHeight:500}}/>
+
+                            
+                        </Carousel.Item> */}
+                    </Carousel>
                 </Col>
-                <Col md={7} className='px-0' style={{padding: 0}}>
+                <Col md={7} className='px-0 ' style={{padding: 0, height: 500}}>
                     <h1 style={{color: '#000', fontSize: 42, fontWeight: 400}}>{device.name}</h1>
-                    <h3 className='my-3' style={{color: '#9F9F9F', fontSize: 24, fontWeight: 600}}>{device.price}</h3>
+                    <h3 className='my-3' style={{color: '#9F9F9F', fontSize: 24, fontWeight: 600}}>{device.price}₽</h3>
                     <div className='d-flex' style={{color: '#9F9F9F', fontSize: 13, fontWeight: 400}}>
                         {/* <div onMouseLeave={handleHoverOutStarContainer}> */}
                         <img 
@@ -214,7 +250,8 @@ const DevicePage = () => {
                                 {info.title}: {info.description}
                             </div>
                     )}</div>
-                    <Button  variant='light' className='devicePage__button-add'
+                    <Button  variant='light' className='devicePage__button-add justify-self-end'
+                    // style={{alignSelf:'flex-end', justifySelf:'flex-end'}}
                         onClick={handleAddToCart}
                     >
                         Add to cart

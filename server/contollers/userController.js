@@ -2,7 +2,7 @@ const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const {User, Basket} = require('../models/models')
-const { where } = require('sequelize')
+const { Sequelize } = require('../db')
 
 const generateJwt = (id, email, role) => {
     return jwt.sign(
@@ -23,8 +23,9 @@ class UserController {
             return next(ApiError.badRequest('Пользователь с таким email уже существует'))
         }
         const hashPassword = await bcrypt.hash(password, 5)
-        const user = await User.create({email, role, password: hashPassword})
-        const basket = await Basket.create({userId: user.id})
+        const user = await User.create({email, role, password: hashPassword, last_login: Date.now()})
+        // const basket = await Basket.create({userId: user.id})
+        const basket = await Basket.create({userId: user.id, status: 'created'}) 
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
     }
@@ -51,23 +52,39 @@ class UserController {
     }
 
     async accessAdmin(req, res, next) {
+        console.log('in access admin',req.user)
         if (req.user && req.user.role === 'ADMIN') {
-            // return 
-            next()
+            return res.json('access admin success')
         } else {
             return res.status(403).json({ error: 'Unauthorized' }); // User is not authorized, return 403 Forbidden
         }
     }
 
-    async getAll(req, res) {
+    async getAndCountAll(req, res) {
         console.log('query:', JSON.stringify(req.query))
 
-        let {page, limit} = req.query
+        let {page, limit, order, search} = req.query
         page = page || 1
         console.log('page:', page)
         limit = limit || 5
         let offset = page * limit - limit
-        let users = await User.findAndCountAll({where: {},limit, offset});
+        if(!order) order = 'id'
+        let users;
+        try {
+            if (order === 'last_login') {console.log('in if'); users = await User.findAndCountAll({where: {
+                email: {
+                  [Sequelize.Op.iLike]: `%${search}%`,
+                },
+              },order: [[order, 'DESC']],limit, offset})}
+            else {console.log('in else');users = await User.findAndCountAll({where: {
+                email: {
+                  [Sequelize.Op.iLike]: `%${search}%`,
+                },
+              },order: [[order, 'ASC'], ['id', 'ASC']],limit, offset})}
+        } catch (error) {
+            console.log(error)
+        }
+        
         return res.json(users)
     }
 }

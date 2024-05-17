@@ -7,6 +7,9 @@ import trophyIcon from '../assets/contact/trophy.png';
 import guaranteeIcon from '../assets/contact/guarantee.png';
 import shippingIcon from '../assets/contact/shipping.png';
 import customerIcon from '../assets/contact/customer.png';
+import { NavLink } from 'react-router-dom';
+import { CONTACT_ROUTE, HOME_ROUTE } from '../utils/consts';
+import logo from '../assets/navIcons/navLogo.svg'
 
 
 
@@ -14,19 +17,41 @@ const Contact = () => {
     return ( 
         <>
         <Container>
-            <Container className='contact-background py-5 mb-5'>
-                <h1 
-                    className='text-center pt-5'
-                    style={{fontSize: 48}}
-                >
-                    Contact
-                </h1>
-                <h2
-                    className='text-center pb-5'
-                    style={{fontSize: 16}}
-                >
-                    Home {">"} Contact
-                </h2>
+            <Container className='contact-background py-5 mb-4 d-flex flex-column align-items-center'>
+            <NavLink 
+                style={{textDecoration: 'none'}} 
+                to={HOME_ROUTE} 
+                className={'d-flex align-items-center mt-3'}
+            >
+                <img style={{width: 77, height:77}} src={logo} alt='Furniro'/>
+            </NavLink>
+            {/* <img src={logo} style={{width: 77, height:77}} alt='logo' className='mt-3'/> */}
+            <h1 
+                className='text-center'
+                style={{fontSize: 48}}
+            >
+                Contact
+            </h1>
+            <div 
+                style={{color: '#000', fontSize: 20}} 
+                className='mt-1 pb-4 d-flex gap-2 align-items-center justify-content-center'
+            >
+                <NavLink
+                    style={{textDecoration: 'none'}} 
+                    to={HOME_ROUTE} 
+                    className={'d-flex align-items-center m-0'}
+                    >
+                    <h2 style={{fontSize: 16, color: '#000', margin: 0}} className=''>Home</h2>
+                </NavLink>
+                {'>'} 
+                <NavLink 
+                    style={{textDecoration: 'none', display: 'inline-block'}} 
+                    to={CONTACT_ROUTE} 
+                    className={'d-flex align-items-center'}
+                    >
+                    <h2 style={{fontSize: 16, color: '#000', margin: 0}} className=''>Contact</h2>
+                </NavLink> 
+            </div>
             </Container>
             <Container className='d-flex flex-column align-items-center'>
                 <h2 style={{fontSize: 36, fontWeight: 500, color: 'black'}}>Get In Touch With Us</h2>

@@ -11,6 +11,7 @@ export default class DeviceStore {
         this._totalCount = 0
         this._limit = 10
         this._search = ''
+        this._sortOrder = 'id'
 
         makeAutoObservable(this);
     }
@@ -48,6 +49,10 @@ export default class DeviceStore {
         this._search = search
     }
 
+    setSortOrder(order) {
+        this._sortOrder = order
+    }
+
     get types() {
         return this._types
     }
@@ -81,4 +86,7 @@ export default class DeviceStore {
         return this._search
     }
 
+    get sortOrder() {
+        return this._sortOrder
+    }
 }

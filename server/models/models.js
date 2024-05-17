@@ -32,6 +32,12 @@ const Device = sequelize.define('device', {
     img: {type: DataTypes.STRING, allowNull: false}
 })
 
+const DeviceImages = sequelize.define('device_images', {
+    id: {type: DataTypes.INTEGER, primaryKey: true,  autoIncrement:true},
+    filename: {type: DataTypes.STRING, allowNull: false},
+    productId: {type: DataTypes.STRING, allowNull: false}
+})
+
 const Type = sequelize.define('type', {
     id: {type: DataTypes.INTEGER, primaryKey: true,  autoIncrement:true},
     name: {type: DataTypes.STRING, unique:true, allowNull: false},
@@ -66,12 +72,15 @@ Basket.belongsTo(User)
 User.hasMany(Rating, { foreignKey: 'user_id' });
 Rating.belongsTo(User, { foreignKey: 'user_id' });
 
+Device.hasMany(DeviceImages, { foreignKey: 'productId', as: 'imgs'});
+DeviceImages.belongsTo(Device, { foreignKey: 'productId' });
+
 Device.hasMany(Rating, { foreignKey: 'product_id' });
 Rating.belongsTo(Device, { foreignKey: 'product_id' });
 Basket.hasMany(BasketDevice)
 BasketDevice.belongsTo(Basket)
 
-Type.hasMany(Device)
+Type.hasMany(Device) 
 Device.belongsTo(Type)
 
 Brand.hasMany(Device)
@@ -95,5 +104,6 @@ module.exports = {
     Brand,
     Rating,
     TypeBrand,
-    DeviceInfo
+    DeviceInfo,
+    DeviceImages
 }
