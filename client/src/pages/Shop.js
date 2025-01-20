@@ -27,11 +27,12 @@ const Shop = observer(() => {
     useEffect(() => {
         fetchTypes().then(data => device.setTypes(data))
         fetchBrands().then(data => device.setBrands(data))
-        
+        device.setPage(1)
+        device.setLimit(10)
     }, [])
 
     useEffect(() => {
-        device.setLimit(10)
+        
         fetchDevices(device.selectedType.id, device.selectedBrand.id, device.page, device.limit, device.search, device.sortOrder).then(data => {
             console.log(data)
             // if (device.search) {

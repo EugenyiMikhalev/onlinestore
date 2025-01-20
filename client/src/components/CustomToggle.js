@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
-import filterIcon from '../assets/shop/filter.png'
+import { ReactComponent as SvgIcon } from '../assets/shop/filter.svg'
 
 function CustomToggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
@@ -12,7 +12,7 @@ function CustomToggle({ children, eventKey }) {
         onClick={decoratedOnClick}
         className='shop-filter'
       >
-        <img src={filterIcon} className='me-2'/>
+        <SvgIcon className='me-2' style={{width: 20, height: 20}} />
         {children}
       </button> );
 }

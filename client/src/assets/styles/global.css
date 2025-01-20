@@ -6,6 +6,7 @@
   --bs-body-font-family: "Nunito", sans-serif;
 }
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
 
 @media (min-width: 1200px) {
   .container,
@@ -29,26 +30,83 @@
 .active > .page-link,
 .page-link.active,
 .list-group-item.active {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
 .border-primary {
-  border-color: var(--primary-color) !important;
+  border-color: var(--color-accent) !important;
 }
 
 .page-link {
   color: var(--color-accent);
   background-color: var(--light-color);
-  border-color: var(--primary-color);
+  border-color: var(--color-accent);
 }
 
 .page-link:hover {
-  color: var(--color-accent);
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  color: var(--light-color);
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
+.hover-link {
+  position: relative;
+}
+
+.hover-link:after {
+  content: "";
+  position: absolute;
+  
+  border-bottom: var(--color-accent) 2px solid;
+  bottom: 0;
+  left: 0;
+}
+
+.hover-link:focus-within:after, .hover-link:hover:after {
+  border-color: var(--color-accent);
+  /* box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.6); */
+  box-shadow: none;
+  /* width: 50%; */
+  /* transition: width 2s ease-in-out; */
+  animation: hover-link .3s forwards;
+  width: 100%;
+}
+
+/* название компании (лого буквами) */
+.logo-name {
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: uppercase;
+  /* font-style: italic; */
+  -moz-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-20deg, 0deg);
+    -webkit-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-20deg, 0deg);
+    -o-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-20deg, 0deg);
+    -ms-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-20deg, 0deg);
+    transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-15deg, 0deg);
+  position: relative;
+  line-height: 17px;
+  }
+.logo-name::after {
+  content: 'Furniro';
+  position: absolute;
+  left:0px;
+  top: 100%;
+}
+
+@keyframes hover-link {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+
+}
 .form-control {
   /* border-color:var(--primary-color); */
   border: none;
@@ -99,12 +157,28 @@
   }
 }
 
+.hover-scale:hover {
+  /* overflow: hidden; */
+  /* transform: scale(1.2); */
+  animation: hoverScale .5s forwards ease-in-out;
+  /* transition: all .5s; */
+}
+
+@keyframes hoverScale {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
 .dropdown {
   /* display: flex;
     align-items: center; */
 }
 
-.dropdown-light {
+.dropdown-light, .shop-filter {
   background-color: var(--light-color);
   border-color: var(--color-accent);
   color: var(--color-accent);
@@ -115,10 +189,10 @@
   align-items: center;
 }
 
-.dropdown-light:hover,
-.dropdown-light:active,
-.dropdown-light:focus,
-.dropdown-light:focus-visible {
+.dropdown-light:hover, .shop-filter:hover,  
+.dropdown-light:active, .shop-filter:active, 
+.dropdown-light:focus, 
+.dropdown-light:focus-visible, .shop-filter:focus-visible  {
   background-color: var(--color-accent) !important;
   border-color: var(--color-accent) !important;
   color: var(--light-color) !important;

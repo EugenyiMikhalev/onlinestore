@@ -37,26 +37,18 @@ const Admin = observer(() => {
 
     const [userSortOrder, setUserSortOrder] = useState('id')
     const [userSearch, setUserSearch] = useState('')
+
+    const [deviceSelectedType, setDeviceSelectedType] = useState({})
+    const [deviceSelectedBrand, setDeviceSelectedBrand] = useState({})
+
     //check if admin
     useEffect(() => {
-        // check().then(
-        //   data => {if(data.role !== 'ADMIN') navigate(SHOP_ROUTE)}
-        //    , 
-        //   error => console.log(error)
-        // )
+        
         device.setSelectedType({})
         device.setSelectedBrand({})
         device.setSearch('')
         accessAdmin().then(response => {
             console.log('accessAdmin response:', response)
-            // if (response.ok) {
-            //     // User is authorized, proceed
-            //     console.log('User is authorized as admin', response);
-            // } else {
-            //     // User is not authorized, handle accordingly
-            //     console.log('User is not authorized as admin');
-            //     navigate(SHOP_ROUTE); // Redirect to the shop route
-            // }
             
             
         }, error => {console.log('accessAdmin error:', error);  navigate(SHOP_ROUTE);})
@@ -104,7 +96,8 @@ const Admin = observer(() => {
     //devices
     const reqDevices = () => {
         // console.log('(device.selectedType.id', device.selectedType.id, 'device.selectedBrand.id', device.selectedBrand.id, 'device.page', device.page, 'device.limit', device.limit)
-        fetchDevices(device.selectedType.id, device.selectedBrand.id, device.page, device.limit, device.search, device.sortOrder).then(data => {
+        console.log('device useEf:', deviceSelectedType, deviceSelectedBrand)
+        fetchDevices(deviceSelectedType.id, deviceSelectedBrand.id, device.page, device.limit, device.search, device.sortOrder).then(data => {
             console.log(data)
             device.setDevices(data.rows)
             device.setTotalCount(data.count)
@@ -121,7 +114,7 @@ const Admin = observer(() => {
         device.setLimit(5)
         reqDevices();
         setAreDevicesUpdated(false)
-    }, [areDevicesUpdated, deviceVisible, device.page, device.search, device.sortOrder, device.selectedType, device.selectedBrand])
+    }, [areDevicesUpdated, deviceVisible, device.page, device.search, device.sortOrder, deviceSelectedType, deviceSelectedBrand])
 
     //handle delete button
     useEffect(() => {
@@ -155,33 +148,6 @@ const Admin = observer(() => {
     const handleDelete = (deleteFrom, deleteName) => {
         setDeleteArguments([deleteFrom, deleteName])
         setShow(true)
-        // if(confirmDelete) {
-//  console.log(typeof(e.target.value))
-
-//         let deleteFrom = e.target.value.split(",")[0]
-//         let deleteName = e.target.value.split(",")[1]
-            // console.log('in cofirmDelete true: ',deleteFrom, deleteName)
-
-            
-            // if (deleteFrom === 'brand') {
-            //     deleteBrand({name: deleteName}).then(data => {
-            //         console.log(data)
-            //         setAreBrandsUpdated(true)
-            //     }) }
-            // else if(deleteFrom === 'type'){
-            //     deleteType({name: deleteName}).then(data => {
-            //         console.log(data)
-            //         setAreTypesUpdated(true)
-            //     }) }
-            // else if(deleteFrom === 'device'){
-            //     deleteDevice({name: deleteName}).then(data => {
-            //         console.log(data)
-            //         setAreDevicesUpdated(true)
-            //     })
-            // }
-            // setConfirmDelete(false)
-        // } else             console.log('in cofirmDelete false: ',deleteFrom, deleteName)
-
     }
 
     // handlge change button
@@ -313,7 +279,7 @@ const Admin = observer(() => {
                 </Col>
             </Row>         
             <Row className='mt-4'>
-            <Col md={6}>
+            <Col md={12}>
                     <Card>
                         <Card.Body className='background-light'>
                             <Card.Title className='d-flex align-items-center gap-4 flex-wrap'>Devices: {device.totalCount}
@@ -332,15 +298,15 @@ const Admin = observer(() => {
                                     <Dropdown.Menu>
                                         <Dropdown.Item 
                                             onClick={() => 
-                                                device.setSelectedType({})
+                                                setDeviceSelectedType({})
                             
                                             }
                                         >none</Dropdown.Item>
                                         {device.types.map(type =>
                                             <Dropdown.Item 
                                                 style={{cursor: 'pointer'}}
-                                                active={type.id === device.selectedType.id}
-                                                onClick={() => device.setSelectedType(type)}
+                                                active={type.id === deviceSelectedType.id}
+                                                onClick={() => setDeviceSelectedType(type)}
                                                 key={type.id}
                                             >
                                                 {type.name}
@@ -355,15 +321,15 @@ const Admin = observer(() => {
                                 <Dropdown.Menu>
                                         <Dropdown.Item 
                                             onClick={() => 
-                                                device.setSelectedBrand({})
+                                                setDeviceSelectedBrand({})
                                                 
                                             }
                                         >none</Dropdown.Item>
                                         {device.brands.map(brand =>
                                             <Dropdown.Item 
                                                 style={{cursor: 'pointer'}}
-                                                active={brand.id === device.selectedBrand.id}
-                                                onClick={() => device.setSelectedBrand(brand)}
+                                                active={brand.id === deviceSelectedBrand.id}
+                                                onClick={() => setDeviceSelectedBrand(brand)}
                                                 key={brand.id}
                                             >
                                                 {brand.name}
@@ -394,9 +360,9 @@ const Admin = observer(() => {
                                         <th style={{fontWeight: 400}}>{new Date(device.createdAt).toLocaleDateString("ru", 
                                             {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
                                         </th>
-                                        <th className='d-flex gap-2 flex-wrap'>
+                                        <th className=''>
                                         <Button 
-                                            className='w-75 button-light'
+                                            className='button-light me-2'
                                             variant='light'
                                             type='button'
                                             value={['device', device.name]}
@@ -405,7 +371,7 @@ const Admin = observer(() => {
                                             Change
                                         </Button>
                                         <Button 
-                                            className='w-75'
+                                            className=''
                                             variant='danger'
                                             type='button'
                                             // value={['device', device.name]}
@@ -442,8 +408,9 @@ const Admin = observer(() => {
                             </Pagination>
                         </Card.Body>
                     </Card>
-                </Col>
-                <Col md={6}>
+                </Col> </Row> 
+                <Row className='mt-4'>
+                <Col md={12}>
                 <Card>
                         <Card.Body className='background-light'>
                             <Card.Title className='d-flex align-items-center gap-4 flex-wrap'>Users: {user.totalCount} 

@@ -54,3 +54,21 @@ export const changeQuantity = async (deviceId, basketId, quantity) => {
     const {data} = await $authHost.post('/api/basket/changeQuantity', {deviceId, basketId, quantity})
     return data
 }
+
+export const getItemsWishlist = async (userId) => {
+    const {data} = await $authHost.get('api/wishlist', {
+        params: {userId: userId}
+    })
+    return data
+}
+
+export const addItemWishlist = async (item) => {
+    const {data} = await $authHost.post('/api/wishlist', item)
+    return data
+}
+
+export const removeItemWishlist = async (deviceId, wishlistId) => {
+    console.log('in remove item:', deviceId, wishlistId)
+    const {data} = await $authHost.post('/api/wishlist/removeItem',  {deviceId, wishlistId})
+    return data
+}

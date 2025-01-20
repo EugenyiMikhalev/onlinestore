@@ -1,6 +1,6 @@
-import { ABOUT_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, CART_ROUTE, CONTACT_ROUTE, DEVICE_ROUTE, FAVORITES_ROUTE, HOME_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from "./utils/consts"
+import { ABOUT_ROUTE, ADMIN_ROUTE, WISHLIST_ROUTE, CART_ROUTE, CHECKOUT_ROUTE, CONTACT_ROUTE, DEVICE_ROUTE, HOME_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "./utils/consts"
 import Admin from "./pages/Admin"
-import Basket from "./pages/Basket"
+// import Basket from "./pages/Basket"
 import Shop from "./pages/Shop"
 import Auth from "./pages/Auth"
 import DevicePage from "./pages/DevicePage"
@@ -8,6 +8,8 @@ import Home from "./pages/Home"
 import About from "./pages/About"
 import Contact from "./pages/Contact"
 import Cart from "./pages/Cart"
+import Checkout from "./pages/Checkout"
+import Wishlist from "./pages/Wishlist"
 
 export const authRoutes = [
     {
@@ -19,8 +21,12 @@ export const authRoutes = [
         Component: Cart
     },
     {
-        path: FAVORITES_ROUTE,
-        Component: Basket
+        path: WISHLIST_ROUTE,
+        Component: Wishlist
+    },
+    {
+        path: CHECKOUT_ROUTE,
+        Component: Checkout
     }
 ]
 

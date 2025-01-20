@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Row, Col, Table, Button, Card } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import trophyIcon from '../assets/contact/trophy.png';
@@ -7,9 +7,10 @@ import shippingIcon from '../assets/contact/shipping.png';
 import customerIcon from '../assets/contact/customer.png';
 import { addItem, changeQuantity, check, getItems, removeItem } from '../http/userAPI.js';
 import { fetchDevices, fetchOneDevice } from '../http/deviceAPI.js';
-import { CART_ROUTE, HOME_ROUTE } from '../utils/consts.js';
-import { NavLink } from 'react-router-dom';
+import { CART_ROUTE, CHECKOUT_ROUTE, HOME_ROUTE } from '../utils/consts.js';
+import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/navIcons/navLogo.svg'
+import { Context } from '../index.js';
 
 
 const Cart = observer(() => {
@@ -18,6 +19,9 @@ const Cart = observer(() => {
     const [cart, setCart] = useState([])
     const [devices, setDevices] = useState([])
     const [isCartUpdated, setIsCartUpdated] = useState(false)
+    const {device, user} = useContext(Context)
+
+    const navigate = useNavigate()
 
     useEffect( () => {
         //фетчим айди юзера, затем по этому айди его корзину
@@ -26,18 +30,38 @@ const Cart = observer(() => {
                 console.log(data);
                 // setUserId(data.id);
                 console.log(data.id)
-                getItems(data.id).then(data1 => {console.log(data1); 
-                    setCart(data1.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)))
+                getItems(data.id).then(data1 => {
+                    console.log(data1); 
+                    setCart(data1.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)));
+                    user.setCart(data1.sort((a,b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)));
+                    let cartValue = user.cart
+                    console.log('user.setCart updated' + cartValue)
                 }, error => console.log(error))
             }
              , 
             error => console.log(error)
         )
-        //фетчим все девайсы магазина для получания данных девайсов корзины (в корзине етсь только айди девайса и цена)
+        //фетчим все девайсы магазина для получения данных девайсов корзины (в корзине етсь только айди девайса и цена)
         fetchDevices({}, {}, 1, 10000, '').then(data => {setDevices(data.rows); console.log(data.rows)}, error => console.log(error))
-        setIsCartUpdated(false)
-    } , [isCartUpdated])
-    
+        // setIsCartUpdated(false)
+        // user.setCartUpdated(!user.cartUpdated)
+    } , 
+    // [isCartUpdated]
+    [user.cartUpdated]
+)
+    useEffect(() => {
+        const handleStorageChange = (event) => {
+            console.log('in handleStorageChange');
+            if(event.key === 'cart' || event.key === 'cartUpdated') {
+                user.loadCartFromLocalStorage();
+            }
+        }
+        window.addEventListener('storage', handleStorageChange);
+        // return () => {
+        //     window.removeEventListener('storage', handleStorageChange)
+        // }
+}, [user.cartUpdated])
+
     // const getCartDeviceName = (cartDeviceId) => {
     //     let cartDeviceName = fetchOneDevice(cartDeviceId).then(data => data.name)
     //     // fetchOneDevice(cartDeviceId).then(data => {cartDeviceName = data.name; console.log(cartDeviceName); console.log(data.name)}, error => console.log(error))
@@ -127,7 +151,8 @@ const Cart = observer(() => {
                                                 else
                                                     removeItem(cartDevice.deviceId,cartDevice.basketId).then(data => console.log(data), error => console.log(error))
 
-                                                setIsCartUpdated(true)
+                                                // setIsCartUpdated(true)
+                                                user.setCartUpdated(!user.cartUpdated)
                                             }}
                                         >
                                             -
@@ -136,7 +161,9 @@ const Cart = observer(() => {
                                         <Button variant='light' className='ms-2'
                                             onClick={() => {
                                                 changeQuantity(cartDevice.deviceId, cartDevice.basketId, cartDevice.quantity + 1)
-                                                setIsCartUpdated(true)
+                                                // setIsCartUpdated(true)
+                                                user.setCartUpdated(!user.cartUpdated)
+
                                             }}
                                         >
                                             +
@@ -150,7 +177,9 @@ const Cart = observer(() => {
                                         onClick={async() => {
                                             console.log(cartDevice.deviceId,cartDevice.basketId)
                                             let data = await removeItem(cartDevice.deviceId,cartDevice.basketId).then(data => console.log(data), error => console.log(error))
-                                            setIsCartUpdated(true)
+                                            // setIsCartUpdated(true)
+                                            user.setCartUpdated(!user.cartUpdated)
+
                                         }} 
                                         variant='danger' 
                                         value={cartDevice.deviceId}>
@@ -179,6 +208,7 @@ const Cart = observer(() => {
                             <Button
                                 style={{fontWeight: 400, fontSize: 20, alignSelf: 'center', margin: 'auto'}}
                                 className='px-5 py-2 align-self-center my-auto cart__button-add'
+                                onClick={() => navigate(CHECKOUT_ROUTE)}
                             >Check Out</Button>
                         </Card.Body>
                     </Card>

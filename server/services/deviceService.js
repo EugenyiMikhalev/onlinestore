@@ -1,4 +1,4 @@
-const { Device, DeviceImages, Rating, BasketDevice } = require("../models/models");
+const { Device, DeviceImages, Rating, BasketDevice, DeviceInfo } = require("../models/models");
 const path = require("path");
 const fs = require("fs");
 
@@ -36,7 +36,9 @@ class DeviceService {
       await DeviceImages.destroy({ where: { productId: device.id } });
       await Rating.destroy({ where: { product_id: device.id } });
       await BasketDevice.destroy({ where: { deviceId: device.id } });
+      await DeviceInfo.destroy({where: {deviceId: device.id}})
       await Device.destroy({ where: { id: device.id } });
+    
 
       return `Device ${name} deleted successfully`;
     } catch (error) {

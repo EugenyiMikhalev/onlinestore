@@ -398,6 +398,7 @@ const ChangeDevice = observer(({show, onHide, deviceId}) => {
                                             value={i.title}
                                             onChange={e => changeInfo('title', e.target.value, i.number)}
                                             placeholder='Введите название свойства'
+                                            required
                                         />
                                     </Col>
                                     <Col md={4}>
@@ -405,6 +406,7 @@ const ChangeDevice = observer(({show, onHide, deviceId}) => {
                                             value={i.description}
                                             onChange={e => changeInfo('description', e.target.value, i.number)}
                                             placeholder='Введите описание свойства'
+                                            required
                                         />
                                     </Col>
                                     <Col md={3}>

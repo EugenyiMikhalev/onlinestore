@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Image, Row, Carousel } from 'react-bootstrap';
 import star from '../assets/star.svg'
 import starGold from '../assets/starGold.png'
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { createRating, fetchOneDevice, fetchRatings } from '../http/deviceAPI';
-import { HOME_ROUTE, SHOP_ROUTE } from '../utils/consts';
+import { HOME_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/consts';
 import { Context } from '..';
 import { addItem, check } from '../http/userAPI';
 
@@ -15,6 +15,7 @@ const DevicePage = () => {
     const [userId, setUserId] = useState()
     const [device, setDevice] = useState({info:[]})
     const {id} = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetchOneDevice(id).then(data => {
@@ -105,6 +106,10 @@ const DevicePage = () => {
         }
         let rating = i + 1
         // let device_id = window.location.pathname.toString().split('/').pop()
+        if(!userId) {
+            navigate(LOGIN_ROUTE)
+            return
+        }
         const formData = new FormData()
         formData.append('rate', rating)
         formData.append('product_id', id)

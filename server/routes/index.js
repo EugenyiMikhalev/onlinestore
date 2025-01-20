@@ -6,6 +6,7 @@ const brandRouter = require('./brandRouter')
 const typeRouter = require('./typeRouter')
 const ratingRouter = require('./ratingRouter')
 const basketRouter = require('./basketRouter')
+const wishlistRouter = require('./wishlistRouter')
 
 
 router.use('/user', userRouter)
@@ -14,5 +15,6 @@ router.use('/brand', brandRouter)
 router.use('/device', deviceRouter)
 router.use('/rating', ratingRouter)
 router.use('/basket', basketRouter)
+router.use('/wishlist', wishlistRouter)
 
 module.exports = router

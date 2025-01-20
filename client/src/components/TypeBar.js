@@ -9,11 +9,11 @@ const TypeBar = observer(() => {
     const {device} = useContext(Context)
     return ( <Container className=''>
         {/* <Search /> */}
-        <div className='d-flex justify-content-start gap-4 align-items-center'>
+        <div className='d-flex justify-content-start gap-4 align-items-center flex-wrap'>
             Select Type: 
             {device.types.map(type =>
                 <div 
-                    style={ type.id === device.selectedType.id ? {cursor: 'pointer', border: 'black solid 2px', backgroundColor: '#000', color: '#F9F1E7'} : {cursor: 'pointer', border: 'black solid 2px'}}
+                    style={ type.id === device.selectedType.id ? {cursor: 'pointer', border: 'black solid 2px', backgroundColor: '#000', color: '#F9F1E7', fontWeight: '600'} : {cursor: 'pointer', border: 'black solid 2px', fontWeight: '600'}}
                     // active={type.id === device.selectedType.id}
                     onClick={() => {
                         if(type.id === device.selectedType.id)

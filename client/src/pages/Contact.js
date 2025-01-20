@@ -89,17 +89,17 @@ const Contact = () => {
                     <Form>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                             <Form.Label style={{fontSize: 16, fontWeight: 600}} className='mb-3'>Your name</Form.Label>
-                            <Form.Control type="text" placeholder="Abc" 
+                            <Form.Control type="text" placeholder="Enter your name..." 
                                 className='py-3'
                                 style={{border: '1px solid #9F9F9F', borderRadius: '10px'}}
                             />
                             <Form.Label style={{fontSize: 16, fontWeight: 600}} className='mb-3 mt-5'>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Abc@def.com" 
+                            <Form.Control type="email" placeholder="example@mail.com" 
                                 className='py-3'
                                 style={{border: '1px solid #9F9F9F', borderRadius: '10px'}}
                             />
                             <Form.Label style={{fontSize: 16, fontWeight: 600}} className='mb-3  mt-5'>Subject</Form.Label>
-                            <Form.Control type="text" placeholder="This is an optional" 
+                            <Form.Control type="text" placeholder="Subject of question..." 
                                 className='py-3'
                                 style={{border: '1px solid #9F9F9F', borderRadius: '10px'}}
                             />
@@ -116,7 +116,7 @@ const Contact = () => {
                         >
                             Submit
                         </Button>
-                        </Form>
+                    </Form>
                     </Col>
                 </Row>
             

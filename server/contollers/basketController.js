@@ -48,7 +48,12 @@ class BasketController {
             BasketItems = await BasketDevice.create({basketId: basket.id, deviceId, price, quantity})
 
         } catch (e) {e => console.log('5555555555', e)} }
-        return res.json({basket, BasketItems})
+        const cartItems = await BasketDevice.findAll({
+            where: { basketId: basket.id }
+        });
+        console.log('cartItems:', cartItems)
+        return res.json(cartItems)
+        // return res.json({basket, BasketItems})
     }
 
     async getItems(req, res) {
